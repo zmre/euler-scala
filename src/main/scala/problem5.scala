@@ -18,10 +18,10 @@ object Problem5 {
   }
 
   def test {
-    assert(doItSmart(10) == 2520)
-    assert(doItSmart(4) == 12)
-    assert(doItSmart(5) == 60)
-    assert(doItSmart(6) == 60)
+    assert(leastCommonMultipleAllNumsUpTo(10) == 2520)
+    assert(leastCommonMultipleAllNumsUpTo(4) == 12)
+    assert(leastCommonMultipleAllNumsUpTo(5) == 60)
+    assert(leastCommonMultipleAllNumsUpTo(6) == 60)
   }
 
   def leastCommonMultipleAllNumsUpTo(high:Int) = {

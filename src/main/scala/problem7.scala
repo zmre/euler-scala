@@ -36,7 +36,6 @@ object Problem7 {
   }
 
   /* Utility func, adapted from Problem 5 */
-  /* Todo: add cache */
   def findPrimeFactors(num: Long): ListBuffer[Long] = {
     if (cache contains num)
       return cache(num)
