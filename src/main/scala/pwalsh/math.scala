@@ -1,23 +1,36 @@
-package pwalsh
+package pwalsh.math
 
-object pwmath {
+object Math {
   import scala.collection.mutable.ListBuffer
-  var cache=collection.mutable.HashMap.empty[Long,ListBuffer[Long]]
+  import pwalsh.cache._
 
-  def findPrimeFactors(num: Long): ListBuffer[Long] = {
-    if (cache contains num)
-      return cache(num)
-    val answers=new ListBuffer[Long];
+  var primeCache = new Cacher
+  primeCache.start
+
+  def isPrime(num: Long): Boolean = {
     (2 to scala.math.sqrt(num).toInt).foreach(divisor =>
       if (num % divisor == 0) {
-        answers ++= findPrimeFactors(divisor)
-        answers ++= findPrimeFactors(num / divisor)
-        return answers
+        return false
       }
     )
+    true
+  }
+
+  def findPrimeFactors(num: Long): ListBuffer[Long] = {
+    if ((primeCache !? CacheContains(num)).asInstanceOf[Boolean])
+      return (primeCache !? CacheGet(num)).asInstanceOf[ListBuffer[Long]]
+    val answers = new ListBuffer[Long];
+    if (num != 2)
+      (2 to scala.math.sqrt(num).toInt).foreach(divisor =>
+        if (num % divisor == 0) {
+          answers ++= findPrimeFactors(divisor)
+          answers ++= findPrimeFactors(num / divisor)
+          return answers
+        }
+      )
     if (answers.size == 0)
       answers += num
-    cache += (num -> answers)
+    primeCache ! CacheStore(num, answers)
     answers
   }
 

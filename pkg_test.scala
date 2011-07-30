@@ -1,7 +1,7 @@
 object test {
   def main(args: Array[String]) {
-    import pwalsh._
-    println(pwmath.findPrimeFactors(15))
+    import pwalsh.math._
+    println(Math.findPrimeFactors(15))
   }
 }
 
