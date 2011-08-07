@@ -1,7 +1,6 @@
 package pwalsh.math
 
 object Math {
-  import scala.collection.mutable.ListBuffer
   import pwalsh.cache._
 
   var primeCache = new Cacher
@@ -16,20 +15,21 @@ object Math {
     true
   }
 
-  def findPrimeFactors(num: Long): ListBuffer[Long] = {
+// TODO: rewrite using tail recursion so we can do very large numbers
+  def findPrimeFactors(num: Long): List[Long] = {
     if ((primeCache !? CacheContains(num)).asInstanceOf[Boolean])
-      return (primeCache !? CacheGet(num)).asInstanceOf[ListBuffer[Long]]
-    val answers = new ListBuffer[Long];
+      return (primeCache !? CacheGet(num)).asInstanceOf[List[Long]]
+    var answers = List[Long]()
     if (num != 2)
       (2 to scala.math.sqrt(num).toInt).foreach(divisor =>
         if (num % divisor == 0) {
-          answers ++= findPrimeFactors(divisor)
-          answers ++= findPrimeFactors(num / divisor)
+          answers = findPrimeFactors(divisor) ++ answers
+          answers = findPrimeFactors(num / divisor) ++ answers
           return answers
         }
       )
     if (answers.size == 0)
-      answers += num
+      answers = List(num) ++ answers
     primeCache ! CacheStore(num, answers)
     answers
   }
